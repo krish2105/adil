@@ -54,12 +54,26 @@ in both is read from a `metrics/*.json` artifact written by a notebook; none is 
 
 ## Setup
 
+ADIL depends on [SPINE](https://github.com/krish2105/spine), which supplies the evaluation,
+fairness and decision primitives shared across this Term 4 portfolio. It is consumed as an
+editable path dependency, so **the two repositories must sit as siblings**:
+
+```
+MAIB-Term4/
+├── 01-spine/     # github.com/krish2105/spine
+├── 02-adil/      # this repository
+└── data/         # shared, outside every repo, never committed
+```
+
 ```bash
-uv sync
+git clone https://github.com/krish2105/spine.git 01-spine
+git clone https://github.com/krish2105/adil.git  02-adil
+cd 02-adil && uv sync
 cp .env.example .env      # DATA_ROOT points at the shared data store
 ```
 
-Data lives outside the repository and is never committed. See `../data/README.md`.
+Data lives outside the repository and is never committed. The Home Credit tables are not
+redistributable here — see `data/README.md` in the parent directory for the download checklist.
 
 ## Run
 
