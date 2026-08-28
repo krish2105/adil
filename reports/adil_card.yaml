@@ -1,0 +1,199 @@
+model:
+  name: ADIL — explainable credit decisioning
+  version: 0.1.0 (rung R6, seed 20260827)
+  owner: Krishna Mathur, MAIB AI 217, SP Jain School of Global Management, Dubai
+  model_class: LightGBM, monotone-constrained on 5 of 20 features, capped at 20 features,
+    isotonic-calibrated, single approval cutoff
+  baseline: Weight-of-evidence scorecard, 20 characteristics, PDO 20 / 50:1 / 600
+  status: Academic coursework. Not deployed and not deployable.
+intended_use: Demonstrating that explanation, fairness evidence and threshold justification
+  can be first-class deliverables in a consumer credit model rather than appendices to one.
+  It answers a research question — whether the accuracy gained by moving from a weight-of-evidence
+  scorecard to gradient boosting survives explainability and fairness constraints, and what
+  it costs per approved application. It is not a lending model. It is fitted on public competition
+  data from another market, has no monitoring, no out-of-time validation and no human review
+  process, and must not be used to decide anything about a real applicant.
+data:
+  source: Home Credit Default Risk (Kaggle), all seven tables, 307,511 applications and 574
+    columns
+  provenance: real
+  not_uae_data: Public competition data from another market. The distribution differs materially
+    from any Emirati lending book and no figure here transfers to one without re-estimation.
+  split: Stratified 60/20/20 train/calibration/test, seed 20260827, target-rate spread 1.31e-06
+  no_temporal_split: application_train carries no application date; every DAYS_* column is
+    relative to the application. No time axis exists, so no temporal split is possible and
+    spine.splitting is deliberately unused. Leakage is controlled instead by as-of-application
+    feature construction, tested in tests/test_features.py.
+  leakage_control: Every satellite aggregate is filtered to records knowable at application
+    time. Removal counts are recorded for all six tables, including the three where the filter
+    removes nothing.
+  currency: Anonymised and unscaled. All costs are reported in dataset currency units. Any
+    dirham figure in this project is a labelled scenario, not a finding.
+metrics:
+- name: R0 PR-AUC
+  value: 0.21035
+  split: test (stratified holdout, 61,503 applications)
+- name: R0 AUC
+  value: 0.73961
+  split: test (stratified holdout, 61,503 applications)
+- name: R0 Gini
+  value: 0.47921
+  split: test (stratified holdout, 61,503 applications)
+- name: R0 Brier
+  value: 0.06908
+  split: test (stratified holdout, 61,503 applications)
+- name: R0 Expected calibration error
+  value: 0.00353
+  split: test (stratified holdout, 61,503 applications)
+- name: R0 approval rate
+  value: 0.8747
+  split: test, at the rung's cost-optimal cutoff
+- name: R0 expected cost per approved application
+  value: 21,812 dataset currency units
+  split: test, at the rung's cost-optimal cutoff
+- name: R0 reason-code flip rate
+  value: 0.762
+  split: 'test, highest-risk decile, 0.5σ perturbation (gate 0.10: fail)'
+- name: R1 PR-AUC
+  value: 0.25869
+  split: test (stratified holdout, 61,503 applications)
+- name: R1 AUC
+  value: 0.77689
+  split: test (stratified holdout, 61,503 applications)
+- name: R1 Gini
+  value: 0.55378
+  split: test (stratified holdout, 61,503 applications)
+- name: R1 Brier
+  value: 0.06671
+  split: test (stratified holdout, 61,503 applications)
+- name: R1 Expected calibration error
+  value: 0.00246
+  split: test (stratified holdout, 61,503 applications)
+- name: R1 approval rate
+  value: 0.8685
+  split: test, at the rung's cost-optimal cutoff
+- name: R1 expected cost per approved application
+  value: 20,378 dataset currency units
+  split: test, at the rung's cost-optimal cutoff
+- name: R1 reason-code flip rate
+  value: 0.877
+  split: 'test, highest-risk decile, 0.5σ perturbation (gate 0.10: fail)'
+- name: R3 PR-AUC
+  value: 0.25876
+  split: test (stratified holdout, 61,503 applications)
+- name: R3 AUC
+  value: 0.77556
+  split: test (stratified holdout, 61,503 applications)
+- name: R3 Gini
+  value: 0.55112
+  split: test (stratified holdout, 61,503 applications)
+- name: R3 Brier
+  value: 0.06665
+  split: test (stratified holdout, 61,503 applications)
+- name: R3 Expected calibration error
+  value: 0.00289
+  split: test (stratified holdout, 61,503 applications)
+- name: R3 approval rate
+  value: 0.8508
+  split: test, at the rung's cost-optimal cutoff
+- name: R3 expected cost per approved application
+  value: 20,836 dataset currency units
+  split: test, at the rung's cost-optimal cutoff
+- name: R3 reason-code flip rate
+  value: 0.854
+  split: 'test, highest-risk decile, 0.5σ perturbation (gate 0.10: fail)'
+- name: R4 PR-AUC
+  value: 0.23656
+  split: test (stratified holdout, 61,503 applications)
+- name: R4 AUC
+  value: 0.76186
+  split: test (stratified holdout, 61,503 applications)
+- name: R4 Gini
+  value: 0.52371
+  split: test (stratified holdout, 61,503 applications)
+- name: R4 Brier
+  value: 0.06772
+  split: test (stratified holdout, 61,503 applications)
+- name: R4 Expected calibration error
+  value: 0.00245
+  split: test (stratified holdout, 61,503 applications)
+- name: R4 approval rate
+  value: 0.8927
+  split: test, at the rung's cost-optimal cutoff
+- name: R4 expected cost per approved application
+  value: 20,496 dataset currency units
+  split: test, at the rung's cost-optimal cutoff
+- name: R4 reason-code flip rate
+  value: 0.75
+  split: 'test, highest-risk decile, 0.5σ perturbation (gate 0.10: fail)'
+- name: R6 PR-AUC
+  value: 0.23656
+  split: test (stratified holdout, 61,503 applications)
+- name: R6 AUC
+  value: 0.76186
+  split: test (stratified holdout, 61,503 applications)
+- name: R6 Gini
+  value: 0.52371
+  split: test (stratified holdout, 61,503 applications)
+- name: R6 Brier
+  value: 0.06772
+  split: test (stratified holdout, 61,503 applications)
+- name: R6 Expected calibration error
+  value: 0.00245
+  split: test (stratified holdout, 61,503 applications)
+- name: R6 approval rate
+  value: 0.9355
+  split: test, at the rung's cost-optimal cutoff
+- name: R6 expected cost per approved application
+  value: 20,118 dataset currency units
+  split: test, at the rung's cost-optimal cutoff
+- name: R6 reason-code flip rate
+  value: 0.75
+  split: 'test, highest-risk decile, 0.5σ perturbation (gate 0.10: fail)'
+fairness:
+  attribute: Sex (CODE_GENDER), audited alongside age band (DAYS_BIRTH)
+  attribute_status: protected
+  note: These are genuine protected attributes, not proxies. The project brief assumed otherwise
+    and the brief was wrong. Neither attribute is a model input — deciding on them would be
+    disparate treatment — and both are retained for measurement only.
+  unaddressable: Nationality and ethnicity are absent from Home Credit and no honest proxy
+    exists. In a UAE context that is the axis that matters most. It is declared unaddressable
+    rather than approximated, and nothing in this project speaks to it.
+  prioritised_metric: Calibration by group. A group whose predicted probabilities exceed its
+    observed default rate is charged for risk it does not carry, and no downstream threshold
+    repairs that. The equalised-odds gap is reported in full rather than optimised away.
+  approval_disparity_sex: 0.9555
+  approval_disparity_age: 0.8207
+  disparity_floor_imposed: 0.8
+  single_cutoff: One cutoff for every applicant. Equalising error rates by group was shown
+    to require a different cutoff per sex, which is disparate treatment, and it closed the
+    true-positive gap without delivering equalised odds.
+  proxy_audit: Excluding the attributes prevents disparate treatment, not disparate impact.
+    From the 20 features the model actually uses, sex is recoverable at AUC 0.851 and age
+    band at 0.875. Removing the columns did not remove the information.
+limitations:
+- Public competition data from another market, not UAE consumer data.
+- No time axis exists in the source, so no out-of-time validation is possible and none is
+  claimed. Metric stability over time is untested and would be a monitoring requirement before
+  any deployment.
+- 'Reason-code stability fails its pre-registered gate for every model tested, the scorecard
+  included: 75.0% of declined applicants see their top-3 reasons change under a 0.5σ perturbation,
+  against a registered ceiling of 10%. The gate was registered before measurement and has
+  not been revised. On this evidence the reason codes are not fit to serve as adverse-action
+  notices.'
+- The registered perturbation scale turned out not to discriminate between model classes,
+  since no model passes at it. That is a fault in the registration, reported rather than corrected
+  after the fact.
+- The cost ratio is published (UCI German Credit, 5:1); the loss given default, margin rate
+  and AED exposure are assumed. No dirham figure is a measurement.
+- A single cost matrix treats every applicant as carrying the same loss and margin. Exposures
+  on this book span a factor of 70; the exposure-weighted sensitivity is reported in reports/decision_table.md.
+- Reject inference did not work. Parcelling recovered none of the selection gap at any tested
+  k, degrading PR-AUC by up to 0.0126 and calibration further. Nothing else in this project
+  depends on it.
+- Hyperparameters are fixed across rungs and untuned. The ladder measures what constraints
+  cost, not how high the AUC can be pushed.
+- Intervals cover measurement on one test split. They do not cover how much a metric would
+  move on different training data, which is larger.
+- This card is an academic artifact. It is the author's reading of published guidance, not
+  legal advice, and it has not been reviewed by a lawyer or a compliance function.

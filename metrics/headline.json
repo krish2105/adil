@@ -1,0 +1,190 @@
+{
+  "seed": 20260827,
+  "split": "test",
+  "cost_ratio": 5.0,
+  "analytic_threshold": 0.16666666666666666,
+  "money_basis": {
+    "mean_exposure_dataset_units": 601522.8050339008,
+    "margin_unit_dataset_units": 54137.05245305107,
+    "aed_rescaling_factor": 0.0997468416789593,
+    "caveat": "SCENARIO \u2014 assumed parameters, not a finding. Home Credit's currency is anonymised and unscaled, so no dirham figure is computable from this data. The amounts below apply stated assumptions to the model's decisions to make the scale legible; they are not a measurement of anything and must not be quoted as one.",
+    "assumed_mean_exposure_aed": 60000.0,
+    "assumed_loss_given_default": 0.45,
+    "assumed_lifetime_margin_rate": 0.09,
+    "basis": "A 60,000 AED mean personal loan, 45% loss given default, and a 9% lifetime margin on an approved loan that performs. These are round illustrative figures chosen to be arguable, not estimates drawn from any UAE portfolio."
+  },
+  "thresholds": [
+    {
+      "rung": "R0",
+      "empirical threshold": 0.16129032258064516,
+      "analytic threshold": 0.16666666666666666,
+      "gap": -0.005376344086021501,
+      "expected cost per application": 0.35240557371185144,
+      "approval rate": 0.8746565208201226,
+      "bad rate among approved": 0.05864966353124884
+    },
+    {
+      "rung": "R1",
+      "empirical threshold": 0.17181314330958036,
+      "analytic threshold": 0.16666666666666666,
+      "gap": 0.0051464766429137054,
+      "expected cost per application": 0.32692714176544235,
+      "approval rate": 0.8685267385330797,
+      "bad rate among approved": 0.052998109216167134
+    },
+    {
+      "rung": "R3",
+      "empirical threshold": 0.15168539325842698,
+      "analytic threshold": 0.16666666666666666,
+      "gap": -0.014981273408239681,
+      "expected cost per application": 0.32743118221875356,
+      "approval rate": 0.8507552477114938,
+      "bad rate among approved": 0.05072242183319318
+    },
+    {
+      "rung": "R4",
+      "empirical threshold": 0.2,
+      "analytic threshold": 0.16666666666666666,
+      "gap": 0.033333333333333354,
+      "expected cost per application": 0.3379672536299042,
+      "approval rate": 0.8927044209225566,
+      "bad rate among approved": 0.0581378405944922
+    }
+  ],
+  "ladder": [
+    {
+      "rung": "R0",
+      "features": 20,
+      "PR-AUC": 0.2103506636523847,
+      "AUC": 0.7396071645456788,
+      "KS": 0.3608340629979206,
+      "Gini": 0.4792143290913575,
+      "Brier": 0.06908394819782229,
+      "ECE": 0.003534915164195732,
+      "flip rate": 0.7624013905602354,
+      "R5": "fail",
+      "threshold": 0.16129032258064516,
+      "approval rate": 0.8746565208201226,
+      "disparity sex": 0.9220100759399921,
+      "disparity age": 0.6166417960341365,
+      "cost/approved (units)": 0.40290738744097854,
+      "cost/approved (dataset)": 21812.218367614023,
+      "cost/application (dataset)": 19078.199028786057,
+      "cost/approved (AED, SCENARIO)": 2175.6998921812838
+    },
+    {
+      "rung": "R1",
+      "features": 567,
+      "PR-AUC": 0.2586873324262005,
+      "AUC": 0.7768888605323402,
+      "KS": 0.4157106537655769,
+      "Gini": 0.5537777210646804,
+      "Brier": 0.06670671757679919,
+      "ECE": 0.0024587134546409767,
+      "flip rate": 0.8773809523809524,
+      "R5": "fail",
+      "threshold": 0.17181314330958036,
+      "approval rate": 0.8685267385330797,
+      "disparity sex": 0.9296557575482794,
+      "disparity age": 0.7304316295396466,
+      "cost/approved (units)": 0.37641574779564557,
+      "cost/approved (dataset)": 20378.039082567306,
+      "cost/application (dataset)": 17698.871822081815,
+      "cost/approved (AED, SCENARIO)": 2032.645038096486
+    },
+    {
+      "rung": "R3",
+      "features": 567,
+      "PR-AUC": 0.2587579060832257,
+      "AUC": 0.7755611933789455,
+      "KS": 0.4157597611808607,
+      "Gini": 0.5511223867578909,
+      "Brier": 0.06664824566150525,
+      "ECE": 0.0028914942052484737,
+      "flip rate": 0.8537208559565634,
+      "R5": "fail",
+      "threshold": 0.15168539325842698,
+      "approval rate": 0.8507552477114938,
+      "disparity sex": 0.9204510094847925,
+      "disparity age": 0.6858221082280495,
+      "cost/approved (units)": 0.3848711872181026,
+      "cost/approved (dataset)": 20835.791650094456,
+      "cost/application (dataset)": 17726.15908654118,
+      "cost/approved (AED, SCENARIO)": 2078.304410977754
+    },
+    {
+      "rung": "R4",
+      "features": 20,
+      "PR-AUC": 0.23656302201085666,
+      "AUC": 0.7618553814584579,
+      "KS": 0.39405987300042244,
+      "Gini": 0.5237107629169158,
+      "Brier": 0.06772027260758608,
+      "ECE": 0.0024489590709038107,
+      "flip rate": 0.7498051441932969,
+      "R5": "fail",
+      "threshold": 0.2,
+      "approval rate": 0.8927044209225566,
+      "disparity sex": 0.9237284185211468,
+      "disparity age": 0.7437969494579999,
+      "cost/approved (units)": 0.37858808101413377,
+      "cost/approved (dataset)": 20495.64279996211,
+      "cost/application (dataset)": 18296.550937175736,
+      "cost/approved (AED, SCENARIO)": 2044.3756374763225
+    },
+    {
+      "rung": "R6",
+      "features": 20,
+      "PR-AUC": 0.23656302201085666,
+      "AUC": 0.7618553814584579,
+      "KS": 0.39405987300042244,
+      "Gini": 0.5237107629169158,
+      "Brier": 0.06772027260758608,
+      "ECE": 0.0024489590709038107,
+      "flip rate": 0.7498051441932969,
+      "R5": "fail",
+      "threshold": 0.24,
+      "approval rate": 0.935515340715087,
+      "disparity sex": 0.9554843926832955,
+      "disparity age": 0.8206743828782848,
+      "cost/approved (units)": 0.371604358934251,
+      "cost/approved (dataset)": 20117.564671405962,
+      "cost/application (dataset)": 18820.290367928148,
+      "cost/approved (AED, SCENARIO)": 2006.6635382449554
+    }
+  ],
+  "steps": [
+    {
+      "step": "model class (R1 - R0)",
+      "PR-AUC": 0.048336668773815816,
+      "approval rate": -0.006129782287042862,
+      "disparity age": 0.11378983350551009,
+      "cost/approved (dataset)": -1434.1792850467173,
+      "cost/application (dataset)": -1379.3272067042417
+    },
+    {
+      "step": "monotonicity (R3 - R1)",
+      "PR-AUC": 7.057365702517471e-05,
+      "approval rate": -0.01777149082158591,
+      "disparity age": -0.04460952131159712,
+      "cost/approved (dataset)": 457.75256752714995,
+      "cost/application (dataset)": 27.28726445936627
+    },
+    {
+      "step": "feature budget (R4 - R3)",
+      "PR-AUC": -0.022194884072369025,
+      "approval rate": 0.04194917321106284,
+      "disparity age": 0.05797484122995045,
+      "cost/approved (dataset)": -340.14885013234743,
+      "cost/application (dataset)": 570.3918506345544
+    },
+    {
+      "step": "fairness band (R6 - R4)",
+      "PR-AUC": 0.0,
+      "approval rate": 0.04281091979253038,
+      "disparity age": 0.07687743342028486,
+      "cost/approved (dataset)": -378.0781285561461,
+      "cost/application (dataset)": 523.7394307524119
+    }
+  ]
+}

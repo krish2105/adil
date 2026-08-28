@@ -1,0 +1,67 @@
+{
+  "rung": "R5",
+  "kind": "gate \u2014 pass/fail, changes no model",
+  "seed": 20260827,
+  "registration": "Registered before measurement, in this module, and not revised afterwards. A model passes rung R5 if at most 10% of declined applicants see their top-3 adverse-action reason set change when every numeric feature in their file is independently perturbed by a normal draw of 0.5 standard deviations. Order within the set does not count as a change: the applicant is told the same three things, and which is printed first is presentation. Substituting one reason for another does count, because the applicant is then told to fix something different. The verdict is reported whichever way it falls.",
+  "top_k": 3,
+  "registered_sigma": 0.5,
+  "registered_gate": 0.1,
+  "declined_population": "highest-risk decile of the test split, per model",
+  "verification": {
+    "treeshap_vs_shap_library_max_abs_diff": 0.0
+  },
+  "flip_rate_curve": {
+    "R0": {
+      "0.01": 0.13945714667736328,
+      "0.05": 0.2888086642599278,
+      "0.1": 0.3993849445112983,
+      "0.25": 0.5960689931809066,
+      "0.5": 0.7624013905602354
+    },
+    "R1": {
+      "0.01": 0.3101190476190476,
+      "0.05": 0.5654761904761905,
+      "0.1": 0.6949404761904762,
+      "0.25": 0.8078869047619047,
+      "0.5": 0.8773809523809524
+    },
+    "R3": {
+      "0.01": 0.30198019801980197,
+      "0.05": 0.5094219099329288,
+      "0.1": 0.631267965506228,
+      "0.25": 0.7682848930054296,
+      "0.5": 0.8537208559565634
+    },
+    "R4": {
+      "0.01": 0.16399064692127827,
+      "0.05": 0.34138737334372565,
+      "0.1": 0.45752143413873736,
+      "0.25": 0.6196414653156664,
+      "0.5": 0.7498051441932969
+    }
+  },
+  "verdicts": {
+    "R0": {
+      "flip_rate": 0.7624013905602354,
+      "verdict": "fail"
+    },
+    "R1": {
+      "flip_rate": 0.8773809523809524,
+      "verdict": "fail"
+    },
+    "R3": {
+      "flip_rate": 0.8537208559565634,
+      "verdict": "fail"
+    },
+    "R4": {
+      "flip_rate": 0.7498051441932969,
+      "verdict": "fail"
+    }
+  },
+  "cross_model_agreement": {
+    "shared_applicants": 4756,
+    "identical_top_reason": 0.0,
+    "at_least_one_shared_reason": 0.006518082422203532,
+    "mean_shared_reasons": 0.006518082422203532
+  }
+}

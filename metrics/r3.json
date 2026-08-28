@@ -1,0 +1,399 @@
+{
+  "rung": "R3",
+  "description": "Monotone constraints on the features whose credit direction was declared in adil.constraints before fitting. Buys a model whose response to a delinquency measure can be stated to a customer without qualification.",
+  "seed": 20260827,
+  "monotone": true,
+  "feature_cap": null,
+  "n_features": 567,
+  "n_constrained_features": 42,
+  "boosting_rounds": 284,
+  "params": {
+    "objective": "binary",
+    "learning_rate": 0.05,
+    "num_leaves": 31,
+    "min_child_samples": 100,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "lambda_l2": 1.0,
+    "verbose": -1,
+    "seed": 20260827,
+    "deterministic": true,
+    "force_row_wise": true
+  },
+  "metrics_test_raw": {
+    "split": "test",
+    "n": 61503,
+    "event_rate": 0.08072776937710356,
+    "pr_auc": 0.2681625797774977,
+    "auc": 0.7761186845539492,
+    "ks": 0.4167932077658328,
+    "gini": 0.5522373691078983,
+    "brier": 0.06666663313097292,
+    "ece": 0.004075935155671052
+  },
+  "metrics_test_calibrated": {
+    "split": "test",
+    "n": 61503,
+    "event_rate": 0.08072776937710356,
+    "pr_auc": 0.2587579060832257,
+    "auc": 0.7755611933789455,
+    "ks": 0.4157597611808607,
+    "gini": 0.5511223867578909,
+    "brier": 0.06664824566150525,
+    "ece": 0.0028914942052484737
+  },
+  "metrics_train_raw": {
+    "split": "train",
+    "n": 184506,
+    "event_rate": 0.08072908198107379,
+    "pr_auc": 0.4309037480324132,
+    "auc": 0.8559199873919583,
+    "ks": 0.55126895039602,
+    "gini": 0.7118399747839166,
+    "brier": 0.05918606876791247,
+    "ece": 0.02140592683927791
+  },
+  "pr_auc_interval": {
+    "low": 0.24895099204550192,
+    "high": 0.27003964041702466
+  },
+  "monotonicity_check": [
+    {
+      "feature": "AMT_INCOME_TOTAL",
+      "declared": -1,
+      "R1 worst violation": 0.020636844398573467,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "DAYS_EMPLOYED",
+      "declared": 1,
+      "R1 worst violation": 0.006788529799791637,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "EXT_SOURCE_1",
+      "declared": -1,
+      "R1 worst violation": 0.008545935592956494,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "EXT_SOURCE_2",
+      "declared": -1,
+      "R1 worst violation": 0.0023011972777554623,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "EXT_SOURCE_3",
+      "declared": -1,
+      "R1 worst violation": 0.00690149311663478,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CREDIT_DAY_OVERDUE_MIN",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CREDIT_DAY_OVERDUE_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CREDIT_DAY_OVERDUE_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CREDIT_DAY_OVERDUE_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_MAX_OVERDUE_MIN",
+      "declared": 1,
+      "R1 worst violation": 0.0004564262728087923,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_MAX_OVERDUE_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.00035934836326347724,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_MAX_OVERDUE_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0015040678716113365,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_MAX_OVERDUE_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0005186172185534799,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CNT_CREDIT_PROLONG_MIN",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CNT_CREDIT_PROLONG_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CNT_CREDIT_PROLONG_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_CNT_CREDIT_PROLONG_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_SUM_OVERDUE_MIN",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_SUM_OVERDUE_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_SUM_OVERDUE_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BUR_AMT_CREDIT_SUM_OVERDUE_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BB_STATUS_1_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.0023169636134723615,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BB_STATUS_2_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BB_STATUS_3_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BB_STATUS_4_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "BB_STATUS_5_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "PRV_NAME_CONTRACT_STATUS_REFUSED_SHARE",
+      "declared": 1,
+      "R1 worst violation": 0.000956332500925694,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_MIN",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0010916983529668176,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_DEF_MIN",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_DEF_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0014841066521691926,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_DEF_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0010210140420164396,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "POS_SK_DPD_DEF_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_DEF_MAX",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_DEF_MEAN",
+      "declared": 1,
+      "R1 worst violation": 0.0006751081252993341,
+      "R1 obeys": false,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_SK_DPD_DEF_SUM",
+      "declared": 1,
+      "R1 worst violation": 0.0,
+      "R1 obeys": true,
+      "R3 worst violation": 0.0,
+      "R3 obeys": true
+    },
+    {
+      "feature": "CCB_NAME_CONTRACT_STATUS_REFUSED_SHARE",
+      "declared": 1,
+      "R1 worst violation": NaN,
+      "R1 obeys": true,
+      "R3 worst violation": NaN,
+      "R3 obeys": true
+    }
+  ]
+}

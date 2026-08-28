@@ -1,0 +1,113 @@
+{
+  "rung": "R0",
+  "description": "weight-of-evidence scorecard, logistic regression, PDO points scaling",
+  "seed": 20260827,
+  "n_candidates": 567,
+  "n_above_iv_floor": 207,
+  "n_characteristics": 20,
+  "characteristics": [
+    "EXT_SOURCE_3",
+    "EXT_SOURCE_2",
+    "EXT_SOURCE_1",
+    "BUR_DAYS_CREDIT_MEAN",
+    "DAYS_EMPLOYED",
+    "BUR_CREDIT_ACTIVE_CLOSED_SHARE",
+    "AMT_GOODS_PRICE",
+    "OCCUPATION_TYPE",
+    "BUR_DAYS_CREDIT_MAX",
+    "PRV_DAYS_FIRST_DRAWING_SENTINEL_SHARE",
+    "ORGANIZATION_TYPE",
+    "BUR_DAYS_CREDIT_ENDDATE_SUM",
+    "PRV_NAME_CONTRACT_STATUS_REFUSED_SHARE",
+    "NAME_INCOME_TYPE",
+    "BUR_AMT_CREDIT_SUM_DEBT_MEAN",
+    "CCB_CNT_DRAWINGS_CURRENT_MEAN",
+    "BUR_DAYS_CREDIT_UPDATE_SUM",
+    "BUR_AMT_CREDIT_SUM_LIMIT_MEAN",
+    "INS_DAYS_ENTRY_PAYMENT_MIN",
+    "REGION_RATING_CLIENT_W_CITY"
+  ],
+  "iv_floor": 0.02,
+  "max_correlation": 0.7,
+  "scaling": {
+    "pdo": 20,
+    "base_odds": 50,
+    "base_points": 600
+  },
+  "metrics_by_split": {
+    "train": {
+      "split": "train",
+      "n": 184506,
+      "event_rate": 0.08072908198107379,
+      "pr_auc": 0.2269594165343144,
+      "auc": 0.7501363177917638,
+      "ks": 0.3759589829278385,
+      "gini": 0.5002726355835276,
+      "brier": 0.06852494344282618,
+      "ece": 0.002945667650778512
+    },
+    "calibration": {
+      "split": "calibration",
+      "n": 61502,
+      "event_rate": 0.08072908198107379,
+      "pr_auc": 0.2294228562119184,
+      "auc": 0.7433572727756409,
+      "ks": 0.3582497650880215,
+      "gini": 0.4867145455512818,
+      "brier": 0.06853125553433137,
+      "ece": 0.0014681819060122629
+    },
+    "test": {
+      "split": "test",
+      "n": 61503,
+      "event_rate": 0.08072776937710356,
+      "pr_auc": 0.21693342045632003,
+      "auc": 0.740246738311126,
+      "ks": 0.3647296222661891,
+      "gini": 0.48049347662225195,
+      "brier": 0.06905675149969394,
+      "ece": 0.003881987160262813
+    }
+  },
+  "test_intervals": {
+    "pr_auc": {
+      "low": 0.2073534996787956,
+      "high": 0.22788444510741132
+    },
+    "auc": {
+      "low": 0.7338377875805944,
+      "high": 0.7475146642287351
+    },
+    "gini": {
+      "low": 0.4676755751611887,
+      "high": 0.4950293284574702
+    },
+    "ks": {
+      "low": 0.35365490658893767,
+      "high": 0.37951971533971224
+    },
+    "brier": {
+      "low": 0.06738671277951062,
+      "high": 0.07053446840493964
+    }
+  },
+  "calibrated_test": {
+    "split": "test",
+    "n": 61503,
+    "event_rate": 0.08072776937710356,
+    "pr_auc": 0.2103506636523847,
+    "auc": 0.7396071645456788,
+    "ks": 0.3608340629979206,
+    "gini": 0.4792143290913575,
+    "brier": 0.06908394819782229,
+    "ece": 0.003534915164195732
+  },
+  "verification": {
+    "woe_vs_optbinning_max_abs_diff": 4.85722573273506e-16,
+    "iv_vs_optbinning_max_abs_diff": 2.7755575615628914e-17,
+    "german_credit_hand_check_abs_diff": 0.0,
+    "points_scaling_slope": 28.853900817779394,
+    "points_scaling_expected_slope": 28.85390081777927,
+    "points_scaling_max_residual": 7.389644451905042e-13
+  }
+}

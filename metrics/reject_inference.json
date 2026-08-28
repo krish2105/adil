@@ -1,0 +1,141 @@
+{
+  "seed": 20260827,
+  "framing": "A sensitivity analysis, not a correction. application_train records an outcome for every applicant, so there is no true reject population and no hidden labels are being recovered. A selection process is simulated and a technique is tested against ground truth the dataset happens to provide.",
+  "incumbent_policy": {
+    "rule": "decline the worst 20% by EXT_SOURCE_2",
+    "why": "A lender using a single external bureau score before building its own model. Using one of ADIL's own models would be circular, since they were fitted on the whole training split, rejects included.",
+    "missing_score_treated_as": "declined",
+    "accepted": 147604,
+    "rejected": 36902,
+    "accepted_default_rate": 0.06259315465705537,
+    "rejected_default_rate": 0.153270825429516,
+    "selection_gradient": 2.4486835065156707
+  },
+  "real_refusal_population": {
+    "source": "previous_application.NAME_CONTRACT_STATUS == 'Refused'",
+    "profile": [
+      {
+        "band": "never refused",
+        "applicants": 190763.0,
+        "default_rate": 0.07073174567395145,
+        "lift": 0.8761647469866056
+      },
+      {
+        "band": "up to 20%",
+        "applicants": 33374.0,
+        "default_rate": 0.07688619883741835,
+        "lift": 0.9524008818003364
+      },
+      {
+        "band": "20-40%",
+        "applicants": 40343.0,
+        "default_rate": 0.10105842401407927,
+        "lift": 1.251825862114543
+      },
+      {
+        "band": "40-60%",
+        "applicants": 19178.0,
+        "default_rate": 0.130983418500365,
+        "lift": 1.6225112590721344
+      },
+      {
+        "band": "over 60%",
+        "applicants": 7399.0,
+        "default_rate": 0.16177861873226113,
+        "lift": 2.003976025175281
+      }
+    ]
+  },
+  "method": "parcelling with fuzzy augmentation, k swept rather than fitted",
+  "k_grid": [
+    1.0,
+    2.0,
+    3.0,
+    4.0
+  ],
+  "score_bands": 10,
+  "boost_rounds": 200,
+  "results": [
+    {
+      "model": "oracle",
+      "PR-AUC": 0.24425468916752632,
+      "AUC": 0.7621278056017508,
+      "Brier": 0.0677348919895121,
+      "threshold": 0.16271562789322475,
+      "approval rate": 0.8714046469277922,
+      "cost per application": 0.3370242102011284
+    },
+    {
+      "model": "accepted-only",
+      "PR-AUC": 0.23217029077547488,
+      "AUC": 0.7553658196073922,
+      "Brier": 0.06834038698478946,
+      "threshold": 0.1433982262043391,
+      "approval rate": 0.8736484399135002,
+      "cost per application": 0.341999577256394
+    },
+    {
+      "model": "parcelled k=1",
+      "PR-AUC": 0.23457081104379301,
+      "AUC": 0.7558018086704565,
+      "Brier": 0.0682032259615784,
+      "threshold": 0.15512692476311638,
+      "approval rate": 0.8736484399135002,
+      "cost per application": 0.3424873583402436
+    },
+    {
+      "model": "parcelled k=2",
+      "PR-AUC": 0.22872276933498276,
+      "AUC": 0.7558903445131877,
+      "Brier": 0.0710639943202869,
+      "threshold": 0.19379138464782208,
+      "approval rate": 0.8605759068663317,
+      "cost per application": 0.3436580329414825
+    },
+    {
+      "model": "parcelled k=3",
+      "PR-AUC": 0.2222970673471839,
+      "AUC": 0.7513946488128705,
+      "Brier": 0.08279436252114532,
+      "threshold": 0.25962626252626436,
+      "approval rate": 0.8720712810757199,
+      "cost per application": 0.35362502642147536
+    },
+    {
+      "model": "parcelled k=4",
+      "PR-AUC": 0.21961872959001022,
+      "AUC": 0.7485683843646123,
+      "Brier": 0.09509574605037621,
+      "threshold": 0.2713542240830775,
+      "approval rate": 0.8595027884818627,
+      "cost per application": 0.36014503357559796
+    }
+  ],
+  "selection_damage_pr_auc": 0.012084398392051443,
+  "recovery": [
+    {
+      "model": "parcelled k=1",
+      "PR-AUC": 0.23457081104379301,
+      "moved from accepted-only": 0.002400520268318135,
+      "share of the gap recovered": 0.1986462371099157
+    },
+    {
+      "model": "parcelled k=2",
+      "PR-AUC": 0.22872276933498276,
+      "moved from accepted-only": -0.003447521440492124,
+      "share of the gap recovered": -0.2852869732232383
+    },
+    {
+      "model": "parcelled k=3",
+      "PR-AUC": 0.2222970673471839,
+      "moved from accepted-only": -0.009873223428290973,
+      "share of the gap recovered": -0.8170223380574014
+    },
+    {
+      "model": "parcelled k=4",
+      "PR-AUC": 0.21961872959001022,
+      "moved from accepted-only": -0.01255156118546466,
+      "share of the gap recovered": -1.0386583409663568
+    }
+  ]
+}

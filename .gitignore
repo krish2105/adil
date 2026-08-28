@@ -10,3 +10,8 @@ data/
 *.csv
 *.pkl
 .DS_Store
+
+.jupyter/
+.coverage
+.claude/launch.json
+docs/artifact.html

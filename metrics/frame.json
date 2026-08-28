@@ -1,0 +1,77 @@
+{
+  "seed": 20260827,
+  "rows": 307511,
+  "columns": 574,
+  "manifest_rows": 574,
+  "columns_without_a_manifest_row": [],
+  "manifest_rows_without_a_column": [],
+  "target_rate_overall": 0.08072881945686496,
+  "target_rate_by_split": {
+    "calibration": 0.08072908198107379,
+    "test": 0.08072776937710356,
+    "train": 0.08072908198107379
+  },
+  "target_rate_spread": 1.3126039702243686e-06,
+  "rows_by_split": {
+    "calibration": 61502,
+    "test": 61503,
+    "train": 184506
+  },
+  "categoricals_skipped_for_cardinality": [],
+  "as_of_filters": [
+    {
+      "table": "bureau",
+      "as_of_filter": "\"DAYS_CREDIT\" < 0",
+      "counted_over": "the raw table",
+      "rows_before": 1716428,
+      "rows_kept": 1716403,
+      "rows_removed": 25,
+      "share_removed": 1.4565131773660182e-05
+    },
+    {
+      "table": "bureau_balance",
+      "as_of_filter": "\"MONTHS_BALANCE\" < 0",
+      "counted_over": "the table after the upstream join, itself already filtered",
+      "rows_before": 24179737,
+      "rows_kept": 23591219,
+      "rows_removed": 588518,
+      "share_removed": 0.02433930526208784
+    },
+    {
+      "table": "previous_application",
+      "as_of_filter": "\"DAYS_DECISION\" < 0",
+      "counted_over": "the raw table",
+      "rows_before": 1670214,
+      "rows_kept": 1670214,
+      "rows_removed": 0,
+      "share_removed": 0.0
+    },
+    {
+      "table": "POS_CASH_balance",
+      "as_of_filter": "\"MONTHS_BALANCE\" < 0",
+      "counted_over": "the raw table",
+      "rows_before": 10001358,
+      "rows_kept": 10001358,
+      "rows_removed": 0,
+      "share_removed": 0.0
+    },
+    {
+      "table": "credit_card_balance",
+      "as_of_filter": "\"MONTHS_BALANCE\" < 0",
+      "counted_over": "the raw table",
+      "rows_before": 3840312,
+      "rows_kept": 3840312,
+      "rows_removed": 0,
+      "share_removed": 0.0
+    },
+    {
+      "table": "installments_payments",
+      "as_of_filter": "\"DAYS_INSTALMENT\" < 0 AND \"DAYS_ENTRY_PAYMENT\" < 0",
+      "counted_over": "the raw table",
+      "rows_before": 13605401,
+      "rows_kept": 13602496,
+      "rows_removed": 2905,
+      "share_removed": 0.00021351814621266952
+    }
+  ]
+}

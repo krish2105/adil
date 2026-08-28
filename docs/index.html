@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Does the accuracy survive the constraints?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" />
+<style>
+:root {
+  color-scheme: light;
+  --ground:  #f6f7f9;
+  --panel:   #fcfcfd;
+  --ink:     #11161d;
+  --ink-2:   #5c6675;
+  --ink-3:   #68717e;
+  --rule:    #dbe0e7;
+  --rule-2:  #eceff3;
+  --accent:  #2a78d6;
+  --recede:  #c3cad4;
+  --fail:    #b3201f;
+  --pass:    #006400;
+  --spine:   #aeb7c3;
+  --measure: 68ch;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:  #111519;
+    --panel:   #171c22;
+    --ink:     #eaeef3;
+    --ink-2:   #97a1ae;
+    --ink-3:   #8a94a1;
+    --rule:    #262d36;
+    --rule-2:  #1e242b;
+    --accent:  #3987e5;
+    --recede:  #39414c;
+    --fail:    #ef8a89;
+    --pass:    #56b256;
+    --spine:   #3b444f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:  #111519;
+  --panel:   #171c22;
+  --ink:     #eaeef3;
+  --ink-2:   #97a1ae;
+  --ink-3:   #8a94a1;
+  --rule:    #262d36;
+  --rule-2:  #1e242b;
+  --accent:  #3987e5;
+  --recede:  #39414c;
+  --fail:    #ef8a89;
+  --pass:    #56b256;
+  --spine:   #3b444f;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px 96px; }
+.measure { max-width: var(--measure); }
+
+h1, h2, h3 {
+  font-family: Newsreader, ui-serif, Georgia, serif;
+  font-weight: 500;
+  text-wrap: balance;
+  margin: 0;
+  letter-spacing: -0.012em;
+}
+h1 { font-size: clamp(2.1rem, 4.4vw, 3.15rem); line-height: 1.1; }
+h2 { font-size: 1.62rem; line-height: 1.2; }
+h3 { font-size: 1.12rem; line-height: 1.3; }
+p { margin: 0 0 1.05em; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+strong { font-weight: 600; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.mono, .tick, .mark-label, .series-label, .rung-sub, .num, .eyebrow, code {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--ink-3); margin: 0 0 0.7rem;
+}
+
+/* Masthead ------------------------------------------------------------------ */
+.masthead { padding: 68px 0 34px; border-bottom: 2px solid var(--ink); }
+.masthead .sub { color: var(--ink-2); font-size: 1.06rem; max-width: 62ch; margin-top: 1.1rem; }
+.byline {
+  display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 1.4rem;
+  font-size: 0.78rem; color: var(--ink-3); font-family: "IBM Plex Mono", monospace;
+}
+
+/* Sections ------------------------------------------------------------------ */
+section { padding: 54px 0 8px; border-bottom: 1px solid var(--rule); }
+section:last-of-type { border-bottom: 0; }
+.head { display: grid; grid-template-columns: 78px 1fr; gap: 22px; align-items: start; }
+/* min-width:0 is load-bearing. A 1fr grid track refuses to shrink below its
+   content's min-content width, so the fourteen-column table silently widened the
+   whole page and gave the body a horizontal scrollbar — the table's own
+   overflow-x never got a chance to engage. */
+.body { min-width: 0; }
+.head .code {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.74rem; color: var(--ink-3);
+  letter-spacing: 0.08em; padding-top: 0.55rem; border-top: 2px solid var(--spine);
+}
+.body { grid-column: 2; }
+
+/* Figures ------------------------------------------------------------------- */
+figure { margin: 26px 0 8px; }
+.chart { width: 100%; height: auto; display: block; background: var(--panel); }
+figcaption { font-size: 0.83rem; color: var(--ink-2); margin-top: 10px; max-width: 74ch; }
+.rule { stroke: var(--rule); stroke-width: 1; }
+.spine { stroke: var(--spine); stroke-width: 2; }
+.gate { stroke: var(--fail); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.gate-label { font-size: 10px; fill: var(--fail); font-family: "IBM Plex Mono", monospace; }
+.tick { font-size: 10.5px; fill: var(--ink-3); }
+.axis-label { font-size: 10.5px; fill: var(--ink-3); font-family: "IBM Plex Mono", monospace; }
+.mark-label { font-size: 11.5px; fill: var(--ink-2); }
+.mark-label.strong { fill: var(--ink); font-weight: 600; }
+.series-label { font-size: 11.5px; font-weight: 600; font-family: "IBM Plex Mono", monospace; }
+.rung-label { font-size: 12.5px; fill: var(--ink); font-family: "IBM Plex Sans", sans-serif; }
+.rung-sub { font-size: 10px; fill: var(--ink-3); }
+
+/* Tables -------------------------------------------------------------------- */
+.scroll { overflow-x: auto; max-width: 100%; margin: 18px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 0.83rem; }
+th, td { padding: 7px 12px 7px 0; text-align: left; border-bottom: 1px solid var(--rule-2); }
+th {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3);
+  border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+tr.mark td { background: var(--rule-2); }
+.tableview { margin: 12px 0 0; }
+.tableview summary {
+  cursor: pointer; font-size: 0.78rem; color: var(--ink-2);
+  font-family: "IBM Plex Mono", monospace;
+}
+
+/* Figures-in-prose ---------------------------------------------------------- */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 1fr)); gap: 1px;
+         background: var(--rule); border: 1px solid var(--rule); margin: 30px 0; }
+.tile { background: var(--panel); padding: 18px 20px 20px; }
+.tile .label { font-size: 0.7rem; letter-spacing: 0.09em; text-transform: uppercase;
+               color: var(--ink-3); font-family: "IBM Plex Mono", monospace; }
+.tile .value { font-family: Newsreader, serif; font-size: 2.05rem; line-height: 1.15;
+               margin-top: 6px; font-variant-numeric: tabular-nums; }
+.tile .note { font-size: 0.78rem; color: var(--ink-2); margin-top: 4px; }
+.value.gain { color: var(--accent); }
+.value.loss { color: var(--fail); }
+
+.pill { display: inline-flex; align-items: center; gap: 5px;
+        font-family: "IBM Plex Mono", monospace; font-size: 0.68rem;
+        letter-spacing: 0.06em; text-transform: uppercase;
+        padding: 2px 7px; border: 1px solid currentColor; border-radius: 2px; }
+.pill.fail { color: var(--fail); }
+.pill.pass { color: var(--pass); }
+
+.callout { border-left: 2px solid var(--fail); padding: 2px 0 2px 20px; margin: 26px 0; }
+.callout .eyebrow { color: var(--fail); }
+.note { border-left: 2px solid var(--rule); padding: 2px 0 2px 20px; margin: 24px 0;
+        color: var(--ink-2); font-size: 0.92rem; }
+ul { padding-left: 1.15rem; margin: 0 0 1.05em; }
+li { margin-bottom: 0.42em; }
+.caveat { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; color: var(--fail);
+          letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px; }
+
+@media (max-width: 720px) {
+  .head { grid-template-columns: 1fr; gap: 8px; }
+  .body { grid-column: 1; }
+  .head .code { border-top: 0; padding-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="masthead">
+<p class="eyebrow">MAIB AI 217 · AI in Finance · SP Jain School of Global Management, Dubai</p>
+<h1>Does the accuracy survive the constraints?</h1>
+<p class="sub">ADIL prices every regulatory constraint on a consumer credit model — one rung
+at a time — against a weight-of-evidence scorecard built to be beaten. Gradient boosting wins.
+Just over half the accuracy survives the constraints; less than a fifth of the money does.</p>
+<div class="byline">
+  <span>Krishna Mathur</span>
+  <span>Home Credit Default Risk · 307,511 applications · 574 columns</span>
+  <span>seed 20260827</span>
+</div>
+</header>
+<section><div class="head"><div class="code">FINDING</div><div class="body"><h2>The ladder</h2>
+<div class="measure">
+<p>Each rung imposes one further constraint and the metrics move by exactly what that
+constraint cost. A rung that costs nothing is as much a finding as one that costs a lot —
+and monotonicity, the constraint a supervisor is most likely to ask for, is close to free.
+What actually costs is the feature budget.</p>
+</div>
+<div class="tiles">
+<div class="tile"><div class="label">Gained by gradient boosting</div><div class="value gain">+0.0483</div><div class="note">PR-AUC, R1 against the scorecard</div></div>
+<div class="tile"><div class="label">Monotonicity</div><div class="value">+0.0001</div><div class="note">PR-AUC, R3 against R1 — effectively free</div></div>
+<div class="tile"><div class="label">Feature budget</div><div class="value loss">-0.0222</div><div class="note">PR-AUC, R4 against R3 — the real cost</div></div>
+<div class="tile"><div class="label">Accuracy left standing</div><div class="value gain">54%</div><div class="note">net +0.0262 PR-AUC after every rung</div></div>
+<div class="tile"><div class="label">Money left standing</div><div class="value">19%</div><div class="note">net 258 of 1,379 units saved per application</div></div>
+</div>
+<div class="measure">
+<p><strong>The money and the accuracy do not survive at the same rate.</strong> Just over half
+the discrimination gain is still there after every constraint, but less than a fifth of the
+cost saving is — because the last rung buys fairness with money rather than with accuracy. It
+moves only the approval cutoff, so it shows up in the book and not in any discrimination
+metric. Reporting one of these figures without the other would be reporting the flattering
+one.</p>
+</div>
+<figure>
+<svg viewBox="0 0 620 288" role="img" class="chart" aria-label="PR-AUC change at each rung of the constraint ladder"><line x1="300" y1="18" x2="300" y2="266" class="spine" /><rect x="300.0" y="26.0" width="128.0" height="16" rx="2" fill="#2a78d6"><title>model class: +0.0483 PR-AUC</title></rect><text x="8" y="37.0" class="rung-label">model class</text><text x="8" y="51.0" class="rung-sub">R1 - R0</text><text x="612" y="38.5" text-anchor="end" class="mark-label">+0.0483</text><rect x="300.0" y="88.0" width="1.5" height="16" rx="2" fill="#2a78d6"><title>monotonicity: +0.0001 PR-AUC</title></rect><text x="8" y="99.0" class="rung-label">monotonicity</text><text x="8" y="113.0" class="rung-sub">R3 - R1</text><text x="612" y="100.5" text-anchor="end" class="mark-label">+0.0001</text><rect x="241.2" y="150.0" width="58.8" height="16" rx="2" fill="#e34948"><title>feature budget: -0.0222 PR-AUC</title></rect><text x="8" y="161.0" class="rung-label">feature budget</text><text x="8" y="175.0" class="rung-sub">R4 - R3</text><text x="612" y="162.5" text-anchor="end" class="mark-label">-0.0222</text><rect x="300.0" y="212.0" width="1.5" height="16" rx="2" fill="#2a78d6"><title>fairness band: +0.0000 PR-AUC</title></rect><text x="8" y="223.0" class="rung-label">fairness band</text><text x="8" y="237.0" class="rung-sub">R6 - R4</text><text x="612" y="224.5" text-anchor="end" class="mark-label">+0.0000</text><text x="300" y="282" text-anchor="middle" class="axis-label">&#8592; cost  ·  gain &#8594;</text></svg>
+<figcaption>Change in PR-AUC at each rung, on calibrated test predictions. Gains extend right
+of the spine, costs extend left. R6 changes only the approval cutoff, so it moves no
+discrimination metric by construction — its cost is money and approval rate, below.</figcaption>
+</figure>
+<details class="tableview"><summary>Table view — step deltas</summary><div class="scroll"><table><thead><tr><th>Step</th><th class="num">PR-AUC</th><th class="num">Approval rate</th><th class="num">Age disparity</th><th class="num">Cost/application</th></tr></thead><tbody><tr><td>model class (R1 - R0)</td><td class="num">+0.0483</td><td class="num">-0.0061</td><td class="num">+0.1138</td><td class="num">-1,379</td></tr><tr><td>monotonicity (R3 - R1)</td><td class="num">+0.0001</td><td class="num">-0.0178</td><td class="num">-0.0446</td><td class="num">+27</td></tr><tr><td>feature budget (R4 - R3)</td><td class="num">-0.0222</td><td class="num">+0.0419</td><td class="num">+0.0580</td><td class="num">+570</td></tr><tr><td>fairness band (R6 - R4)</td><td class="num">+0.0000</td><td class="num">+0.0428</td><td class="num">+0.0769</td><td class="num">+524</td></tr></tbody></table></div></details></div></div></section>
+<section><div class="head"><div class="code">EVIDENCE</div><div class="body"><h2>Every rung, every measure</h2>
+<div class="measure">
+<p>Discrimination and calibration on calibrated test predictions. Approval rate, disparity and
+cost at each rung's own cost-optimal cutoff. PR-AUC leads because at an 8% base rate AUC
+flatters — a model can rank well overall and still be uninformative where the cutoff sits.</p>
+</div>
+<div class="scroll"><table><thead><tr><th>Rung</th><th class="num">Feat.</th><th class="num">PR-AUC</th><th class="num">AUC</th><th class="num">Gini</th><th class="num">Brier</th><th class="num">ECE</th><th class="num">Flip</th><th class="num">R5</th><th class="num">Approval</th><th class="num">Disp. sex</th><th class="num">Disp. age</th><th class="num">Cost/appl.</th><th class="num">Cost/appr.</th></tr></thead><tbody><tr><td><span class="mono">R0</span></td><td class="num">20</td><td class="num">0.2104</td><td class="num">0.7396</td><td class="num">0.4792</td><td class="num">0.06908</td><td class="num">0.00353</td><td class="num">0.762</td><td class="num"><span class="pill fail">fail</span></td><td class="num">0.8747</td><td class="num">0.9220</td><td class="num">0.6166</td><td class="num">19,078</td><td class="num">21,812</td></tr><tr><td><span class="mono">R1</span></td><td class="num">567</td><td class="num">0.2587</td><td class="num">0.7769</td><td class="num">0.5538</td><td class="num">0.06671</td><td class="num">0.00246</td><td class="num">0.877</td><td class="num"><span class="pill fail">fail</span></td><td class="num">0.8685</td><td class="num">0.9297</td><td class="num">0.7304</td><td class="num">17,699</td><td class="num">20,378</td></tr><tr><td><span class="mono">R3</span></td><td class="num">567</td><td class="num">0.2588</td><td class="num">0.7756</td><td class="num">0.5511</td><td class="num">0.06665</td><td class="num">0.00289</td><td class="num">0.854</td><td class="num"><span class="pill fail">fail</span></td><td class="num">0.8508</td><td class="num">0.9205</td><td class="num">0.6858</td><td class="num">17,726</td><td class="num">20,836</td></tr><tr><td><span class="mono">R4</span></td><td class="num">20</td><td class="num">0.2366</td><td class="num">0.7619</td><td class="num">0.5237</td><td class="num">0.06772</td><td class="num">0.00245</td><td class="num">0.750</td><td class="num"><span class="pill fail">fail</span></td><td class="num">0.8927</td><td class="num">0.9237</td><td class="num">0.7438</td><td class="num">18,297</td><td class="num">20,496</td></tr><tr><td><span class="mono">R6</span></td><td class="num">20</td><td class="num">0.2366</td><td class="num">0.7619</td><td class="num">0.5237</td><td class="num">0.06772</td><td class="num">0.00245</td><td class="num">0.750</td><td class="num"><span class="pill fail">fail</span></td><td class="num">0.9355</td><td class="num">0.9555</td><td class="num">0.8207</td><td class="num">18,820</td><td class="num">20,118</td></tr></tbody></table></div>
+<figure>
+<svg viewBox="0 0 620 260" role="img" class="chart" aria-label="Expected cost per application at each rung"><line x1="52.0" y1="210.0" x2="604.0" y2="210.0" class="rule" /><text x="44" y="214.0" text-anchor="end" class="tick">17,433</text><line x1="52.0" y1="166.0" x2="604.0" y2="166.0" class="rule" /><text x="44" y="170.0" text-anchor="end" class="tick">17,868</text><line x1="52.0" y1="122.0" x2="604.0" y2="122.0" class="rule" /><text x="44" y="126.0" text-anchor="end" class="tick">18,303</text><line x1="52.0" y1="78.0" x2="604.0" y2="78.0" class="rule" /><text x="44" y="82.0" text-anchor="end" class="tick">18,739</text><line x1="52.0" y1="34.0" x2="604.0" y2="34.0" class="rule" /><text x="44" y="38.0" text-anchor="end" class="tick">19,174</text><rect x="70" y="43.6" width="74" height="166.4" rx="2" fill="var(--ink-2)"><title>R0: 19,078 dataset currency units per application</title></rect><text x="107.0" y="35.6" text-anchor="middle" class="mark-label strong">19,078</text><text x="107.0" y="228" text-anchor="middle" class="tick mono">R0</text><rect x="178" y="183.1" width="74" height="26.9" rx="2" fill="var(--recede)"><title>R1: 17,699 dataset currency units per application</title></rect><text x="215.0" y="175.1" text-anchor="middle" class="mark-label">17,699</text><text x="215.0" y="228" text-anchor="middle" class="tick mono">R1</text><rect x="286" y="180.4" width="74" height="29.6" rx="2" fill="var(--recede)"><title>R3: 17,726 dataset currency units per application</title></rect><text x="323.0" y="172.4" text-anchor="middle" class="mark-label">17,726</text><text x="323.0" y="228" text-anchor="middle" class="tick mono">R3</text><rect x="394" y="122.7" width="74" height="87.3" rx="2" fill="var(--recede)"><title>R4: 18,297 dataset currency units per application</title></rect><text x="431.0" y="114.7" text-anchor="middle" class="mark-label">18,297</text><text x="431.0" y="228" text-anchor="middle" class="tick mono">R4</text><rect x="502" y="69.7" width="74" height="140.3" rx="2" fill="#2a78d6"><title>R6: 18,820 dataset currency units per application</title></rect><text x="539.0" y="61.7" text-anchor="middle" class="mark-label strong">18,820</text><text x="539.0" y="228" text-anchor="middle" class="tick mono">R6</text><line x1="52.0" y1="210.0" x2="604.0" y2="210.0" class="rule" /></svg>
+<figcaption>Expected cost per <em>application</em> in dataset currency units, at each rung's
+cost-optimal cutoff. The scorecard and the deployable rung are emphasised; the intermediate
+rungs are context. Cost per <em>approved</em> application moves the other way at R6, because
+that cutoff approves a larger book — both columns are in the table above for that reason.</figcaption>
+</figure>
+<div class="note">Costs use the one published ratio available to this project — five to one
+against classing a bad account as good, documented in the UCI German Credit data. The loss
+given default and margin rate are assumptions, stated in the report and chosen so their ratio
+matches that published figure.</div></div></div></section>
+<section><div class="head"><div class="code">R5 · GATE</div><div class="body"><h2>The reason codes do not hold still</h2>
+<div class="measure">
+<p>A regulator asks to see a declined applicant's reasons and asks whether they mean anything.
+So the threshold was written into <code>adil.reasons</code> <strong>before any flip rate was
+measured</strong>: at most 10% of declined applicants may see their
+top-3 reason set change when their file is nudged. It has not been revised since.</p>
+</div>
+<div class="callout">
+<p class="eyebrow">Result</p>
+<p><strong>Every model fails, the scorecard included.</strong> At the registered
+0.5σ perturbation the deployable rung flips
+75.0% of reason sets against a ceiling of
+10%. On this evidence the reason codes are not fit to serve as
+adverse-action notices.</p>
+</div>
+<figure>
+<svg viewBox="0 0 620 300" role="img" class="chart" aria-label="Reason-code flip rate against perturbation scale, by rung"><line x1="56.0" y1="232.0" x2="520.0" y2="232.0" class="rule" /><text x="48" y="236.0" text-anchor="end" class="tick">0%</text><line x1="56.0" y1="180.5" x2="520.0" y2="180.5" class="rule" /><text x="48" y="184.5" text-anchor="end" class="tick">25%</text><line x1="56.0" y1="129.0" x2="520.0" y2="129.0" class="rule" /><text x="48" y="133.0" text-anchor="end" class="tick">50%</text><line x1="56.0" y1="77.5" x2="520.0" y2="77.5" class="rule" /><text x="48" y="81.5" text-anchor="end" class="tick">75%</text><line x1="56.0" y1="26.0" x2="520.0" y2="26.0" class="rule" /><text x="48" y="30.0" text-anchor="end" class="tick">100%</text><line x1="56" y1="211.4" x2="520" y2="211.4" class="gate" /><text x="526" y="215.4" class="gate-label">gate 10%</text><polyline points="56.0,203.3 246.9,172.5 329.1,149.7 437.8,109.2 520.0,74.9" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" /><circle cx="56.0" cy="203.3" r="4" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>R0 at 0.01σ: 13.9% of reason sets change</title></circle><circle cx="246.9" cy="172.5" r="4" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>R0 at 0.05σ: 28.9% of reason sets change</title></circle><circle cx="329.1" cy="149.7" r="4" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>R0 at 0.1σ: 39.9% of reason sets change</title></circle><circle cx="437.8" cy="109.2" r="4" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>R0 at 0.25σ: 59.6% of reason sets change</title></circle><circle cx="520.0" cy="74.9" r="4" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>R0 at 0.5σ: 76.2% of reason sets change</title></circle><text x="530.0" y="87.3" class="series-label" fill="#2a78d6">R0</text><polyline points="56.0,168.1 246.9,115.5 329.1,88.8 437.8,65.6 520.0,51.3" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" /><circle cx="56.0" cy="168.1" r="4" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>R1 at 0.01σ: 31.0% of reason sets change</title></circle><circle cx="246.9" cy="115.5" r="4" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>R1 at 0.05σ: 56.5% of reason sets change</title></circle><circle cx="329.1" cy="88.8" r="4" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>R1 at 0.1σ: 69.5% of reason sets change</title></circle><circle cx="437.8" cy="65.6" r="4" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>R1 at 0.25σ: 80.8% of reason sets change</title></circle><circle cx="520.0" cy="51.3" r="4" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>R1 at 0.5σ: 87.7% of reason sets change</title></circle><text x="530.0" y="55.3" class="series-label" fill="#eb6834">R1</text><polyline points="56.0,169.8 246.9,127.1 329.1,102.0 437.8,73.7 520.0,56.1" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round" /><circle cx="56.0" cy="169.8" r="4" fill="#1baf7a" stroke="var(--panel)" stroke-width="2"><title>R3 at 0.01σ: 30.2% of reason sets change</title></circle><circle cx="246.9" cy="127.1" r="4" fill="#1baf7a" stroke="var(--panel)" stroke-width="2"><title>R3 at 0.05σ: 50.9% of reason sets change</title></circle><circle cx="329.1" cy="102.0" r="4" fill="#1baf7a" stroke="var(--panel)" stroke-width="2"><title>R3 at 0.1σ: 63.1% of reason sets change</title></circle><circle cx="437.8" cy="73.7" r="4" fill="#1baf7a" stroke="var(--panel)" stroke-width="2"><title>R3 at 0.25σ: 76.8% of reason sets change</title></circle><circle cx="520.0" cy="56.1" r="4" fill="#1baf7a" stroke="var(--panel)" stroke-width="2"><title>R3 at 0.5σ: 85.4% of reason sets change</title></circle><text x="530.0" y="71.3" class="series-label" fill="#1baf7a">R3</text><polyline points="56.0,198.2 246.9,161.7 329.1,137.8 437.8,104.4 520.0,77.5" fill="none" stroke="#eda100" stroke-width="2" stroke-linejoin="round" /><circle cx="56.0" cy="198.2" r="4" fill="#eda100" stroke="var(--panel)" stroke-width="2"><title>R4 at 0.01σ: 16.4% of reason sets change</title></circle><circle cx="246.9" cy="161.7" r="4" fill="#eda100" stroke="var(--panel)" stroke-width="2"><title>R4 at 0.05σ: 34.1% of reason sets change</title></circle><circle cx="329.1" cy="137.8" r="4" fill="#eda100" stroke="var(--panel)" stroke-width="2"><title>R4 at 0.1σ: 45.8% of reason sets change</title></circle><circle cx="437.8" cy="104.4" r="4" fill="#eda100" stroke="var(--panel)" stroke-width="2"><title>R4 at 0.25σ: 62.0% of reason sets change</title></circle><circle cx="520.0" cy="77.5" r="4" fill="#eda100" stroke="var(--panel)" stroke-width="2"><title>R4 at 0.5σ: 75.0% of reason sets change</title></circle><text x="530.0" y="103.3" class="series-label" fill="#eda100">R4</text><text x="56.0" y="252" text-anchor="middle" class="tick mono">0.01σ</text><text x="246.9" y="252" text-anchor="middle" class="tick mono">0.05σ</text><text x="329.1" y="252" text-anchor="middle" class="tick mono">0.1σ</text><text x="437.8" y="252" text-anchor="middle" class="tick mono">0.25σ</text><text x="520.0" y="252" text-anchor="middle" class="tick mono">0.5σ</text><text x="288" y="292" text-anchor="middle" class="axis-label">perturbation, in standard deviations per feature</text></svg>
+<figcaption>Share of declined applicants whose top-three reason set changes, by perturbation
+scale. Reordering does not count as a change; substitution does. <strong>Feature count drives
+stability</strong> — at the smallest perturbation the 20-feature models flip far less than the
+567-feature ones, which is a benefit of the feature budget that no discrimination metric
+shows. The curves also cross: coarse binning buys the scorecard stability against small nudges
+and surrenders it against large ones.</figcaption>
+</figure>
+<details class="tableview"><summary>Table view — flip rate by perturbation scale</summary><div class="scroll"><table><thead><tr><th>Rung</th><th class="num">0.01σ</th><th class="num">0.05σ</th><th class="num">0.1σ</th><th class="num">0.25σ</th><th class="num">0.5σ</th></tr></thead><tbody><tr><td><span class="mono">R0</span></td><td class="num">0.139</td><td class="num">0.289</td><td class="num">0.399</td><td class="num">0.596</td><td class="num">0.762</td></tr><tr><td><span class="mono">R1</span></td><td class="num">0.310</td><td class="num">0.565</td><td class="num">0.695</td><td class="num">0.808</td><td class="num">0.877</td></tr><tr><td><span class="mono">R3</span></td><td class="num">0.302</td><td class="num">0.509</td><td class="num">0.631</td><td class="num">0.768</td><td class="num">0.854</td></tr><tr><td><span class="mono">R4</span></td><td class="num">0.164</td><td class="num">0.341</td><td class="num">0.458</td><td class="num">0.620</td><td class="num">0.750</td></tr></tbody></table></div></details>
+<div class="note"><strong>A fault in my own registration.</strong> At half a standard deviation
+on every numeric field at once, no model of either class survives — so the gate as registered
+does not discriminate between them. Registering a threshold without a pilot measurement
+produced a test that is honest and uninformative at its operating point. The right response is
+to report that, not to move the threshold after seeing the numbers.</div>
+<p class="measure">The two model classes also disagree about <em>why</em>. Across the
+4,756 applicants both place in their highest-risk decile, the
+scorecard and the challenger name the same top reason
+<strong>0.0%</strong> of the time, and share at least one
+reason 0.7% of the time. Two models can agree closely
+on <em>who</em> is risky and still tell them entirely different things.</p></div></div></section>
+<section><div class="head"><div class="code">FAIRNESS</div><div class="body"><h2>Removing sex and age did not make the model fair</h2>
+<div class="measure">
+<p>These are genuine protected attributes, not proxies. Neither is a model input — deciding on
+them would be disparate treatment — and both are held aside for measurement only. The obvious
+challenge is whether that exclusion achieved anything. It prevents disparate treatment. It does
+nothing about disparate impact, because the information survives in correlated features.</p>
+</div>
+<div class="tiles">
+<div class="tile"><div class="label">Sex, reconstructed</div><div class="value loss">0.851</div><div class="note">test AUC, from the 20 features the model uses</div></div>
+<div class="tile"><div class="label">Age band, reconstructed</div><div class="value loss">0.875</div><div class="note">test AUC, from the same 20 features</div></div>
+<div class="tile"><div class="label">Approval disparity, age</div><div class="value">0.821</div><div class="note">at the banded cutoff; floor imposed at 0.80</div></div>
+<div class="tile"><div class="label">Approval disparity, sex</div><div class="value">0.955</div><div class="note">at the banded cutoff</div></div>
+</div>
+<figure>
+<svg viewBox="0 0 620 250" role="img" class="chart" aria-label="Approval-rate disparity ratio by rung, for sex and age band"><line x1="56.0" y1="190.0" x2="520.0" y2="190.0" class="rule" /><text x="48" y="194.0" text-anchor="end" class="tick">0.5</text><line x1="56.0" y1="158.0" x2="520.0" y2="158.0" class="rule" /><text x="48" y="162.0" text-anchor="end" class="tick">0.6</text><line x1="56.0" y1="126.0" x2="520.0" y2="126.0" class="rule" /><text x="48" y="130.0" text-anchor="end" class="tick">0.7</text><line x1="56.0" y1="94.0" x2="520.0" y2="94.0" class="rule" /><text x="48" y="98.0" text-anchor="end" class="tick">0.8</text><line x1="56.0" y1="62.0" x2="520.0" y2="62.0" class="rule" /><text x="48" y="66.0" text-anchor="end" class="tick">0.9</text><line x1="56.0" y1="30.0" x2="520.0" y2="30.0" class="rule" /><text x="48" y="34.0" text-anchor="end" class="tick">1.0</text><line x1="56" y1="94.0" x2="520" y2="94.0" class="gate" /><text x="61" y="88.0" class="gate-label">0.80 four-fifths floor</text><polyline points="114.0,127.1 230.0,92.0 346.0,90.4 462.0,100.5" fill="none" stroke="#2a78d6" stroke-width="2" stroke-opacity="0.45" /><circle cx="114.0" cy="127.1" r="5" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>age band at R0: disparity 0.6964</title></circle><circle cx="230.0" cy="92.0" r="5" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>age band at R1: disparity 0.8062</title></circle><circle cx="346.0" cy="90.4" r="5" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>age band at R3: disparity 0.8112</title></circle><circle cx="462.0" cy="100.5" r="5" fill="#2a78d6" stroke="var(--panel)" stroke-width="2"><title>age band at R4: disparity 0.7796</title></circle><text x="474.0" y="104.5" class="series-label" fill="#2a78d6">age band</text><polyline points="114.0,47.8 230.0,45.5 346.0,44.7 462.0,49.6" fill="none" stroke="#eb6834" stroke-width="2" stroke-opacity="0.45" /><circle cx="114.0" cy="47.8" r="5" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>sex at R0: disparity 0.9443</title></circle><circle cx="230.0" cy="45.5" r="5" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>sex at R1: disparity 0.9516</title></circle><circle cx="346.0" cy="44.7" r="5" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>sex at R3: disparity 0.9540</title></circle><circle cx="462.0" cy="49.6" r="5" fill="#eb6834" stroke="var(--panel)" stroke-width="2"><title>sex at R4: disparity 0.9388</title></circle><text x="474.0" y="53.6" class="series-label" fill="#eb6834">sex</text><text x="114.0" y="210" text-anchor="middle" class="tick mono">R0</text><text x="230.0" y="210" text-anchor="middle" class="tick mono">R1</text><text x="346.0" y="210" text-anchor="middle" class="tick mono">R3</text><text x="462.0" y="210" text-anchor="middle" class="tick mono">R4</text></svg>
+<figcaption>Approval-rate disparity ratio — least-favoured group over most-favoured — for the
+four model rungs, all measured at one common reference approval rate so they are comparable.
+Age band sits below the four-fifths line throughout, and sex comfortably above it. R6 is not
+plotted here: it sits at its own banded cutoff, and putting a different decision on the same
+axis would read as though the model had changed. Its values are in the tiles above. The line
+is a US employment-screening heuristic used as a declared, checkable bound, not a legal
+standard in this jurisdiction.</figcaption>
+</figure>
+<div class="note"><strong>Nationality and ethnicity are absent from this data</strong>, and in a
+UAE context that is the axis that matters most. No honest proxy exists. That dimension is
+declared unaddressable rather than approximated, and nothing here speaks to it.</div>
+<h3>Why there is one cutoff for everyone</h3>
+<div class="measure">
+<p>Equalising error rates by group was tested and rejected on the evidence. Forcing equal
+opportunity required a different cutoff for each sex — a spread of
+0.053, meaning two applicants with identical files and different
+sexes face different decisions. That is disparate treatment.</p>
+<p><strong>And it did not even work.</strong> The true-positive gap closed from
+0.0462 to 0.0328; the false-positive gap
+did not, moving only 0.0879 to 0.0461.
+Equalised odds requires both, so the residual difference <em>is</em> the false-positive gap.
+Under unequal base rates, thresholding a calibrated score cannot deliver equalised odds at all
+— and the attempt incurs disparate treatment before it falls short.</p>
+</div></div></div></section>
+<section><div class="head"><div class="code">SENSITIVITY</div><div class="body"><h2>Reject inference did not work</h2>
+<div class="measure">
+<p>Every model here was fitted on applicants who were approved, so the training sample is
+selected by the policy the new model replaces. Because this dataset labels everyone, the
+technique can be tested against an <strong>oracle</strong> — fit on everything — which almost
+no real study can do. Selection cost the accepted-only model
+0.0121 PR-AUC. That gap is what inference has to close.</p>
+</div>
+<div class="callout">
+<p class="eyebrow">Result</p>
+<p>It closed none of it. The share of the gap recovered runs from
+<strong>+19.9%</strong> down to <strong>-103.9%</strong> — negative meaning the
+inferred model is <em>further</em> from the oracle than the one it was meant to improve.
+Calibration degrades faster than discrimination, which matters more: a cost-based cutoff needs
+the probability to mean what it says.</p>
+</div>
+<div class="scroll"><table><thead><tr><th>Model</th><th class="num">PR-AUC</th><th class="num">AUC</th><th class="num">Brier</th><th class="num">Approval rate</th><th class="num">Cost/application</th></tr></thead><tbody><tr><td>oracle</td><td class="num">0.2443</td><td class="num">0.7621</td><td class="num">0.06773</td><td class="num">0.8714</td><td class="num">0.33702</td></tr><tr><td>accepted-only</td><td class="num">0.2322</td><td class="num">0.7554</td><td class="num">0.06834</td><td class="num">0.8736</td><td class="num">0.34200</td></tr><tr><td>parcelled k=1</td><td class="num">0.2346</td><td class="num">0.7558</td><td class="num">0.06820</td><td class="num">0.8736</td><td class="num">0.34249</td></tr><tr><td>parcelled k=2</td><td class="num">0.2287</td><td class="num">0.7559</td><td class="num">0.07106</td><td class="num">0.8606</td><td class="num">0.34366</td></tr><tr><td>parcelled k=3</td><td class="num">0.2223</td><td class="num">0.7514</td><td class="num">0.08279</td><td class="num">0.8721</td><td class="num">0.35363</td></tr><tr><td>parcelled k=4</td><td class="num">0.2196</td><td class="num">0.7486</td><td class="num">0.09510</td><td class="num">0.8595</td><td class="num">0.36015</td></tr></tbody></table></div>
+<div class="note">The mechanism is not an implementation bug. Parcelling assigns rejects an
+outcome derived from the model about to be refitted on them, so there is no new information in
+the loop — it sharpens the model's existing opinion rather than correcting it. What should be
+read off this is not the best k but the spread, because k cannot be estimated from an
+accepted-only sample. That is precisely the information selection destroyed.</div></div></div></section>
+<section><div class="head"><div class="code">METHOD</div><div class="body"><h2>Two decisions that shape everything else</h2>
+<h3>There is no temporal split, and that is not an oversight</h3>
+<div class="measure">
+<p>The source carries no application date — every <code>DAYS_*</code> column is measured
+relative to the application, so no time axis exists to order applicants along. Manufacturing a
+pseudo-date would fabricate a temporal claim the data cannot support, so the shared splitting
+library is deliberately unused and the split is stratified under a recorded seed.</p>
+<p>What a temporal split exists to prevent is handled instead by as-of-application feature
+construction: every satellite aggregate is restricted to records knowable when the application
+was decided, and the count each filter removes is recorded — including where it removes
+nothing, because a no-op that is measured is evidence and a no-op that is assumed is a hole.</p>
+</div>
+<div class="scroll"><table><thead><tr><th>Table</th><th>As-of filter</th><th class="num">Rows before</th><th class="num">Removed</th><th class="num">%</th></tr></thead><tbody><tr><td><code>bureau</code></td><td><code>&quot;DAYS_CREDIT&quot; &lt; 0</code></td><td class="num">1,716,428</td><td class="num">25</td><td class="num">0.0015</td></tr><tr><td><code>bureau_balance</code></td><td><code>&quot;MONTHS_BALANCE&quot; &lt; 0</code></td><td class="num">24,179,737</td><td class="num">588,518</td><td class="num">2.4339</td></tr><tr><td><code>previous_application</code></td><td><code>&quot;DAYS_DECISION&quot; &lt; 0</code></td><td class="num">1,670,214</td><td class="num">0</td><td class="num">0.0000</td></tr><tr><td><code>POS_CASH_balance</code></td><td><code>&quot;MONTHS_BALANCE&quot; &lt; 0</code></td><td class="num">10,001,358</td><td class="num">0</td><td class="num">0.0000</td></tr><tr><td><code>credit_card_balance</code></td><td><code>&quot;MONTHS_BALANCE&quot; &lt; 0</code></td><td class="num">3,840,312</td><td class="num">0</td><td class="num">0.0000</td></tr><tr><td><code>installments_payments</code></td><td><code>&quot;DAYS_INSTALMENT&quot; &lt; 0 AND &quot;DAYS_ENTRY_PAYMENT&quot; &lt; 0</code></td><td class="num">13,605,401</td><td class="num">2,905</td><td class="num">0.0214</td></tr></tbody></table></div>
+<div class="measure">
+<p>The one that matters is <code>installments_payments</code>: the rows it drops are
+instalments due before the application but <em>paid on or after it</em> — repayment behaviour
+that had not happened when the decision was taken. Filtering on the due date alone would have
+let it through.</p>
+</div>
+<h3>Nothing here is checked against itself</h3>
+<div class="measure">
+<p>The weight-of-evidence and information-value arithmetic is implemented independently of the
+binning library so the library can be verified against the formula rather than against itself,
+and the same arithmetic is checked against a hand computation on 1,000 rows of a dataset small
+enough to count.</p>
+</div>
+<div class="tiles">
+<div class="tile"><div class="label">WoE vs optbinning</div><div class="value">5e-16</div><div class="note">maximum absolute difference, three characteristics</div></div>
+<div class="tile"><div class="label">Against hand computation</div><div class="value">0e+00</div><div class="note">German Credit attribute 6, countable by hand</div></div>
+<div class="tile"><div class="label">Points scaling residual</div><div class="value">7e-13</div><div class="note">score is affine in log-odds with slope PDO / ln 2</div></div>
+<div class="tile"><div class="label">Monotone constraints that bind</div><div class="value">5 of 20</div><div class="note">declared before fitting, never revised after</div></div>
+</div></div></div></section>
+<section><div class="head"><div class="code">PROVENANCE</div><div class="body"><h2>Every number on this page came out of a file</h2>
+<div class="measure">
+<p>None of it is typed. Each figure is read from a metrics artifact written by a notebook, and
+this page is generated from those artifacts by a script, so deleting them and rerunning the
+pipeline reproduces the page exactly. Two consecutive full runs were diffed to check that
+claim rather than assert it: 1,221 values across ten artifacts, zero differences, every report
+byte-identical.</p>
+<p>Getting there found two defects that no other check would have caught. The aggregation
+engine does not guarantee row order across parallel joins, which silently changed the split
+assignment on every build. And parallel floating-point aggregation is not associative — 48 of
+559 numeric columns differed between builds by around 1e-8, far too small to notice and quite
+large enough to move a split threshold and with it every number in every report. Both are
+fixed and both have regression tests.</p>
+</div>
+<div class="note">The regulatory mapping is deliberately empty. The governing guidance has not
+been read by the author of this pipeline, and a clause number produced from memory would be
+worse than the gap it fills. The model card ships that section as a marked stub with an index
+of the evidence a mapping would draw on. Nothing here is legal advice.</div>
+<h2 style="margin-top:2.2rem">Limitations</h2>
+<div class="measure">
+<ul>
+<li>Public competition data from another market, not UAE consumer data. No figure transfers to
+an Emirati lending book without re-estimation.</li>
+<li>Amounts are in an anonymised, unscaled currency. Every dirham figure in this project is a
+labelled scenario, not a measurement.</li>
+<li>No out-of-time validation is possible and none is claimed. Metric stability over time is
+untested and would be a monitoring requirement before any deployment.</li>
+<li>Intervals cover measurement on one test split. They do not cover how much a metric would
+move on different training data, which is larger and is not estimated.</li>
+<li>Hyperparameters are fixed across rungs and untuned. The ladder measures what constraints
+cost, not how high the accuracy can be pushed.</li>
+<li>Sex is recorded as a binary here. That is the data's limitation, reproduced rather than
+misrepresented, and it does not reflect the range of people a real lending book serves.</li>
+</ul>
+</div>
+<p class="caveat">Academic coursework · not deployed and not deployable</p></div></div></section>
+</div>
+</body>
+</html>

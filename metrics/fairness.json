@@ -1,0 +1,426 @@
+{
+  "seed": 20260827,
+  "protected_attributes_are_real": true,
+  "note": "CODE_GENDER is sex and DAYS_BIRTH is age; both are genuinely protected attributes, not proxies. Nationality and ethnicity are absent from Home Credit and are declared unaddressable rather than approximated.",
+  "excluded_from_sex_audit": {
+    "XNA": 2
+  },
+  "prioritised_metric": "calibration by group",
+  "reference_approval_rate": 0.9,
+  "base_rates": [
+    {
+      "attribute": "sex",
+      "group": "F",
+      "n": 40578,
+      "default rate": 0.07065404899206466
+    },
+    {
+      "attribute": "sex",
+      "group": "M",
+      "n": 20923,
+      "default rate": 0.10027242747215982
+    },
+    {
+      "attribute": "age band",
+      "group": "25-34",
+      "n": 14413,
+      "default rate": 0.10601540276139597
+    },
+    {
+      "attribute": "age band",
+      "group": "35-44",
+      "n": 16885,
+      "default rate": 0.08255848386141545
+    },
+    {
+      "attribute": "age band",
+      "group": "45-54",
+      "n": 14070,
+      "default rate": 0.0728500355366027
+    },
+    {
+      "attribute": "age band",
+      "group": "55+",
+      "n": 13698,
+      "default rate": 0.0527814279456855
+    },
+    {
+      "attribute": "age band",
+      "group": "<25",
+      "n": 2437,
+      "default rate": 0.12105047189167009
+    }
+  ],
+  "disparity_at_reference": [
+    {
+      "attribute": "age band",
+      "rung": "R0",
+      "approval disparity": 0.6964176146183418,
+      "TPR disparity": 0.7223445980684629,
+      "FPR disparity": 0.5235901386748845,
+      "min approval rate": 0.6811653672548215,
+      "max approval rate": 0.9780989925536575
+    },
+    {
+      "attribute": "age band",
+      "rung": "R1",
+      "approval disparity": 0.8062462206184838,
+      "TPR disparity": 0.8369248536300672,
+      "FPR disparity": 0.6239262246538255,
+      "min approval rate": 0.780878128846943,
+      "max approval rate": 0.9685355526354212
+    },
+    {
+      "attribute": "age band",
+      "rung": "R3",
+      "approval disparity": 0.8112429620115875,
+      "TPR disparity": 0.8457875983910653,
+      "FPR disparity": 0.5926886008640744,
+      "min approval rate": 0.7882642593352482,
+      "max approval rate": 0.9716746970360637
+    },
+    {
+      "attribute": "age band",
+      "rung": "R4",
+      "approval disparity": 0.7796137008099355,
+      "TPR disparity": 0.812125640770142,
+      "FPR disparity": 0.5729253797050408,
+      "min approval rate": 0.7550266721378744,
+      "max approval rate": 0.9684625492772667
+    },
+    {
+      "attribute": "sex",
+      "rung": "R0",
+      "approval disparity": 0.9443254867882229,
+      "TPR disparity": 0.9541735363281987,
+      "FPR disparity": 0.9026336854779112,
+      "min approval rate": 0.8778377861683315,
+      "max approval rate": 0.9295923899650057
+    },
+    {
+      "attribute": "sex",
+      "rung": "R1",
+      "approval disparity": 0.9515765724078977,
+      "TPR disparity": 0.9627255793299497,
+      "FPR disparity": 0.9123700710420469,
+      "min approval rate": 0.8859150217464035,
+      "max approval rate": 0.9309970920203066
+    },
+    {
+      "attribute": "sex",
+      "rung": "R3",
+      "approval disparity": 0.9540157576077152,
+      "TPR disparity": 0.9644736008344923,
+      "FPR disparity": 0.9186765478135652,
+      "min approval rate": 0.8940400516178368,
+      "max approval rate": 0.9371334220513579
+    },
+    {
+      "attribute": "sex",
+      "rung": "R4",
+      "approval disparity": 0.9388087795376944,
+      "TPR disparity": 0.9512164354629674,
+      "FPR disparity": 0.8785367590476301,
+      "min approval rate": 0.8737274769392535,
+      "max approval rate": 0.9306767213761151
+    }
+  ],
+  "calibration_by_group": [
+    {
+      "rung": "R0",
+      "attribute": "sex",
+      "group": "F",
+      "n": 40578,
+      "mean predicted": 0.0736056950143112,
+      "observed": 0.07065404899206466,
+      "gap": 0.00295164602224654
+    },
+    {
+      "rung": "R0",
+      "attribute": "sex",
+      "group": "M",
+      "n": 20923,
+      "mean predicted": 0.09629273449025083,
+      "observed": 0.10027242747215982,
+      "gap": -0.003979692981908992
+    },
+    {
+      "rung": "R0",
+      "attribute": "age band",
+      "group": "25-34",
+      "n": 14413,
+      "mean predicted": 0.10895340586248808,
+      "observed": 0.10601540276139597,
+      "gap": 0.0029380031010921154
+    },
+    {
+      "rung": "R0",
+      "attribute": "age band",
+      "group": "35-44",
+      "n": 16885,
+      "mean predicted": 0.07924158248251928,
+      "observed": 0.08255848386141545,
+      "gap": -0.0033169013788961754
+    },
+    {
+      "rung": "R0",
+      "attribute": "age band",
+      "group": "45-54",
+      "n": 14070,
+      "mean predicted": 0.06918874403880952,
+      "observed": 0.0728500355366027,
+      "gap": -0.0036612914977931788
+    },
+    {
+      "rung": "R0",
+      "attribute": "age band",
+      "group": "55+",
+      "n": 13698,
+      "mean predicted": 0.0531526006984117,
+      "observed": 0.0527814279456855,
+      "gap": 0.0003711727527261968
+    },
+    {
+      "rung": "R0",
+      "attribute": "age band",
+      "group": "<25",
+      "n": 2437,
+      "mean predicted": 0.16075395042805327,
+      "observed": 0.12105047189167009,
+      "gap": 0.039703478536383174
+    },
+    {
+      "rung": "R1",
+      "attribute": "sex",
+      "group": "F",
+      "n": 40578,
+      "mean predicted": 0.0739914867591422,
+      "observed": 0.07065404899206466,
+      "gap": 0.003337437767077539
+    },
+    {
+      "rung": "R1",
+      "attribute": "sex",
+      "group": "M",
+      "n": 20923,
+      "mean predicted": 0.09525990368260116,
+      "observed": 0.10027242747215982,
+      "gap": -0.005012523789558659
+    },
+    {
+      "rung": "R1",
+      "attribute": "age band",
+      "group": "25-34",
+      "n": 14413,
+      "mean predicted": 0.10433466079827755,
+      "observed": 0.10601540276139597,
+      "gap": -0.0016807419631184178
+    },
+    {
+      "rung": "R1",
+      "attribute": "age band",
+      "group": "35-44",
+      "n": 16885,
+      "mean predicted": 0.07977483955605914,
+      "observed": 0.08255848386141545,
+      "gap": -0.0027836443053563115
+    },
+    {
+      "rung": "R1",
+      "attribute": "age band",
+      "group": "45-54",
+      "n": 14070,
+      "mean predicted": 0.07453325690726863,
+      "observed": 0.0728500355366027,
+      "gap": 0.0016832213706659271
+    },
+    {
+      "rung": "R1",
+      "attribute": "age band",
+      "group": "55+",
+      "n": 13698,
+      "mean predicted": 0.05480735330590399,
+      "observed": 0.0527814279456855,
+      "gap": 0.002025925360218492
+    },
+    {
+      "rung": "R1",
+      "attribute": "age band",
+      "group": "<25",
+      "n": 2437,
+      "mean predicted": 0.14179516195390368,
+      "observed": 0.12105047189167009,
+      "gap": 0.02074469006223359
+    },
+    {
+      "rung": "R3",
+      "attribute": "sex",
+      "group": "F",
+      "n": 40578,
+      "mean predicted": 0.07387994196718103,
+      "observed": 0.07065404899206466,
+      "gap": 0.0032258929751163706
+    },
+    {
+      "rung": "R3",
+      "attribute": "sex",
+      "group": "M",
+      "n": 20923,
+      "mean predicted": 0.0954719874201333,
+      "observed": 0.10027242747215982,
+      "gap": -0.004800440052026525
+    },
+    {
+      "rung": "R3",
+      "attribute": "age band",
+      "group": "25-34",
+      "n": 14413,
+      "mean predicted": 0.1044680792339387,
+      "observed": 0.10601540276139597,
+      "gap": -0.0015473235274572755
+    },
+    {
+      "rung": "R3",
+      "attribute": "age band",
+      "group": "35-44",
+      "n": 16885,
+      "mean predicted": 0.07957208039433449,
+      "observed": 0.08255848386141545,
+      "gap": -0.0029864034670809697
+    },
+    {
+      "rung": "R3",
+      "attribute": "age band",
+      "group": "45-54",
+      "n": 14070,
+      "mean predicted": 0.07453266858913675,
+      "observed": 0.0728500355366027,
+      "gap": 0.0016826330525340494
+    },
+    {
+      "rung": "R3",
+      "attribute": "age band",
+      "group": "55+",
+      "n": 13698,
+      "mean predicted": 0.05437837905709927,
+      "observed": 0.0527814279456855,
+      "gap": 0.0015969511114137663
+    },
+    {
+      "rung": "R3",
+      "attribute": "age band",
+      "group": "<25",
+      "n": 2437,
+      "mean predicted": 0.14476671935398217,
+      "observed": 0.12105047189167009,
+      "gap": 0.023716247462312073
+    },
+    {
+      "rung": "R4",
+      "attribute": "sex",
+      "group": "F",
+      "n": 40578,
+      "mean predicted": 0.07268704913571265,
+      "observed": 0.07065404899206466,
+      "gap": 0.0020330001436479894
+    },
+    {
+      "rung": "R4",
+      "attribute": "sex",
+      "group": "M",
+      "n": 20923,
+      "mean predicted": 0.09869479102852824,
+      "observed": 0.10027242747215982,
+      "gap": -0.0015776364436315832
+    },
+    {
+      "rung": "R4",
+      "attribute": "age band",
+      "group": "25-34",
+      "n": 14413,
+      "mean predicted": 0.10471561156985813,
+      "observed": 0.10601540276139597,
+      "gap": -0.0012997911915378357
+    },
+    {
+      "rung": "R4",
+      "attribute": "age band",
+      "group": "35-44",
+      "n": 16885,
+      "mean predicted": 0.08104735451929947,
+      "observed": 0.08255848386141545,
+      "gap": -0.0015111293421159883
+    },
+    {
+      "rung": "R4",
+      "attribute": "age band",
+      "group": "45-54",
+      "n": 14070,
+      "mean predicted": 0.07298050109431195,
+      "observed": 0.0728500355366027,
+      "gap": 0.00013046555770925006
+    },
+    {
+      "rung": "R4",
+      "attribute": "age band",
+      "group": "55+",
+      "n": 13698,
+      "mean predicted": 0.0551206208343386,
+      "observed": 0.0527814279456855,
+      "gap": 0.0023391928886530994
+    },
+    {
+      "rung": "R4",
+      "attribute": "age band",
+      "group": "<25",
+      "n": 2437,
+      "mean predicted": 0.14568466119635462,
+      "observed": 0.12105047189167009,
+      "gap": 0.02463418930468453
+    }
+  ],
+  "worst_absolute_calibration_gap": {
+    "age band": {
+      "R0": 0.039703478536383174,
+      "R1": 0.02074469006223359,
+      "R3": 0.023716247462312073,
+      "R4": 0.02463418930468453
+    },
+    "sex": {
+      "R0": 0.003979692981908992,
+      "R1": 0.005012523789558659,
+      "R3": 0.004800440052026525,
+      "R4": 0.0020330001436479894
+    }
+  },
+  "impossibility_demonstration": {
+    "attribute": "sex",
+    "rung": "R4",
+    "equalised_odds_before": 0.08790939134153042,
+    "equalised_odds_after_group_cutoffs": 0.046053793155273026,
+    "tpr_gap_before": 0.04616916598145615,
+    "tpr_gap_after": 0.03275133033668409,
+    "fpr_gap_before": 0.08790939134153042,
+    "fpr_gap_after": 0.046053793155273026,
+    "group_cutoffs": {
+      "F": 0.15359477124183007,
+      "M": 0.20642867756428032
+    },
+    "cutoff_spread": 0.05283390632245025,
+    "conclusion": "Equalising the true positive rate required a different cutoff per sex, which is disparate treatment, and still did not deliver equalised odds: the TPR gap closes by construction, the FPR gap does not, and equalised odds requires both. Under unequal base rates, thresholding a calibrated score cannot deliver equalised odds at all. Notebook 06 therefore uses one cutoff for everyone and reports the residual disparity rather than optimising it away."
+  },
+  "proxy_audit": [
+    {
+      "reconstructing": "sex is male",
+      "from": "R4's 20 features",
+      "test AUC": 0.8506449833882146,
+      "base rate": 0.34020585031137707
+    },
+    {
+      "reconstructing": "age under 35",
+      "from": "R4's 20 features",
+      "test AUC": 0.874817000004365,
+      "base rate": 0.2739630249914636
+    }
+  ]
+}

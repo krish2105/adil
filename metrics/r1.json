@@ -1,0 +1,61 @@
+{
+  "rung": "R1",
+  "description": "LightGBM on the full candidate pool with no shape constraint. The challenger's best case, and the number every later rung is charged against.",
+  "seed": 20260827,
+  "monotone": false,
+  "feature_cap": null,
+  "n_features": 567,
+  "n_constrained_features": 42,
+  "boosting_rounds": 320,
+  "params": {
+    "objective": "binary",
+    "learning_rate": 0.05,
+    "num_leaves": 31,
+    "min_child_samples": 100,
+    "feature_fraction": 0.8,
+    "bagging_fraction": 0.8,
+    "bagging_freq": 1,
+    "lambda_l2": 1.0,
+    "verbose": -1,
+    "seed": 20260827,
+    "deterministic": true,
+    "force_row_wise": true
+  },
+  "metrics_test_raw": {
+    "split": "test",
+    "n": 61503,
+    "event_rate": 0.08072776937710356,
+    "pr_auc": 0.26653621743992373,
+    "auc": 0.7773812278293023,
+    "ks": 0.4169545729156413,
+    "gini": 0.5547624556586046,
+    "brier": 0.06662745874345423,
+    "ece": 0.003977770105652106
+  },
+  "metrics_test_calibrated": {
+    "split": "test",
+    "n": 61503,
+    "event_rate": 0.08072776937710356,
+    "pr_auc": 0.2586873324262005,
+    "auc": 0.7768888605323402,
+    "ks": 0.4157106537655769,
+    "gini": 0.5537777210646804,
+    "brier": 0.06670671757679919,
+    "ece": 0.0024587134546409767
+  },
+  "metrics_train_raw": {
+    "split": "train",
+    "n": 184506,
+    "event_rate": 0.08072908198107379,
+    "pr_auc": 0.4652443348259656,
+    "auc": 0.8702549422526026,
+    "ks": 0.5774343594102833,
+    "gini": 0.7405098845052052,
+    "brier": 0.05779743653515174,
+    "ece": 0.02308020582042938
+  },
+  "pr_auc_interval": {
+    "low": 0.24757587155344224,
+    "high": 0.26996698206952474
+  }
+}
