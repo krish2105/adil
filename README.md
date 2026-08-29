@@ -72,8 +72,20 @@ cd 02-adil && uv sync
 cp .env.example .env      # DATA_ROOT points at the shared data store
 ```
 
-Data lives outside the repository and is never committed. The Home Credit tables are not
-redistributable here — see `data/README.md` in the parent directory for the download checklist.
+Data lives outside the repository and is never committed, so two datasets have to be
+fetched into `<DATA_ROOT>/raw/` before anything will run. Neither is redistributable here.
+
+| Directory | Dataset | Source |
+|---|---|---|
+| `raw/home-credit/` | Home Credit Default Risk — the seven tables ADIL joins, 5.3 GB | Kaggle: `c/home-credit-default-risk` |
+| `raw/german-credit/` | Statlog (German Credit Data) — 1,000 rows, used only in notebook 02 | [UCI ML Repository, dataset 144](https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data) |
+
+German Credit is not a second modelling dataset. It appears only where its 1,000 rows
+make the weight-of-evidence arithmetic checkable by hand: different target, different
+features, different country.
+
+`adil.paths` raises with the expected directory if either is missing, rather than
+proceeding on partial data.
 
 ## Run
 
